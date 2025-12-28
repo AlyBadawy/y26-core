@@ -32,3 +32,6 @@
 /config/*.key
 
 .DS_Store
+
+/coverage
+!/coverage/.keep
