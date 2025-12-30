@@ -12,6 +12,7 @@ class CreateUsers < ActiveRecord::Migration[8.1]
       t.string :phone
       t.string :bio
       t.string :password_digest
+      t.datetime :password_changed_at
       t.string :reset_password_token
       t.datetime :reset_password_token_created_at
 

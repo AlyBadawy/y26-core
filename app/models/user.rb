@@ -22,5 +22,60 @@ class User < ApplicationRecord
               message: "can only contain letters, numbers, underscores, and periods, but cannot start with a number or contain consecutive underscores or periods",
             }
 
+  validates :password,
+            length: {
+              minimum: AuthConfiguration.password_min_length,
+              maximum: AuthConfiguration.password_max_length,
+            },
+            format: {
+              with: AuthConfiguration.password_complexity,
+              message: "must contain at least one uppercase letter, one lowercase letter, one digit, and one special character",
+            },
+            allow_blank: true
+
+      validates :password_confirmation,
+                presence: true,
+                if: -> { password.present? }
+
+  has_secure_password
+
   has_many :sessions, dependent: :destroy
+
+  before_save :update_password_changed_at, if: :will_save_change_to_password_digest?
+
+  def generate_reset_password_token!
+    update!(
+      reset_password_token: TokenGenerator.generate_password_reset_token,
+      reset_password_token_created_at: Time.current
+    )
+  end
+
+  def reset_password_token_valid?
+    return false if reset_password_token.blank? || reset_password_token_created_at.blank?
+
+    duration = AuthConfiguration.password_expires_in
+    return false unless duration.is_a?(ActiveSupport::Duration)
+
+    reset_password_token_created_at > duration.ago
+  end
+
+  def clear_reset_password_token!
+    update!(
+      reset_password_token: nil,
+      reset_password_token_created_at: nil
+    )
+  end
+
+  def password_expired?
+    return false unless AuthConfiguration.password_expires
+    return true unless password_changed_at
+
+    password_changed_at < AuthConfiguration.password_expires_in.ago
+  end
+
+  private
+
+  def update_password_changed_at
+    self.password_changed_at = Time.current
+  end
 end

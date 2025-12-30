@@ -45,3 +45,5 @@ group :test do
   gem "simplecov"
   gem "simplecov-lcov"
 end
+
+gem "jwt", "~> 3.1"
