@@ -30,7 +30,7 @@ module AuthConfiguration
   end
 
   def password_expires_in
-    2.hours
+    90.days
   end
 
   def password_expires

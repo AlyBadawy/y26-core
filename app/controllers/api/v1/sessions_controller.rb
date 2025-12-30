@@ -24,22 +24,21 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def update
-    if Current.session = Session.find_by(refresh_token: params[:refresh_token], revoked: false)
-        if Current.session.is_valid_session_request?(request)
-          Current.session.refresh!
-          render status: :ok,
-                 json: {
-                   access_token: AuthEncoder.encode(Current.session),
-                   refresh_token: Current.session.refresh_token,
-                   refresh_token_expires_at: Current.session.refresh_token_expires_at,
-                 }
-          return
-        end
+    Current.session = Session.find_by(refresh_token: params[:refresh_token], revoked: false)
+    if Current.session && Current.session.is_valid_session_request?(request)
+      Current.session.refresh!
+      render status: :ok,
+             json: {
+               access_token: AuthEncoder.encode(Current.session),
+               refresh_token: Current.session.refresh_token,
+               refresh_token_expires_at: Current.session.refresh_token_expires_at,
+             }
+      return
     end
-      render status: :unprocessable_content, json: {
-        error: "Invalid or expired token.",
-        instructions: "Please log in again to obtain a new access token.",
-      }
+    render status: :unprocessable_content, json: {
+      error: "Invalid or expired token.",
+      instructions: "Please log in again to obtain a new access token.",
+    }
   end
 
   def destroy

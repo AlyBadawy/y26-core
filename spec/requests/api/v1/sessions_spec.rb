@@ -59,7 +59,7 @@ RSpec.describe "Api::V1::Sessions", type: :request do
     end
   end
 
-  describe "GET /create" do
+  describe "POST /create" do
     let(:new_user) { create(:user, password: "MyNewPassword!1", password_confirmation: "MyNewPassword!1") }
     let(:new_session) { create(:session, user: new_user) }
     let(:new_valid_headers) {
@@ -116,7 +116,7 @@ RSpec.describe "Api::V1::Sessions", type: :request do
     end
   end
 
-  describe "GET /update" do
+  describe "PUT /update" do
     it "refreshes the session" do
       Current.session = @signed_in_session
       expect(Current.session).not_to be_nil
@@ -147,7 +147,7 @@ RSpec.describe "Api::V1::Sessions", type: :request do
     end
   end
 
-  describe "GET /destroy" do
+  describe "DELETE /destroy" do
     context "when user is signed in" do
       it "logs out the current user" do
         expect(@signed_in_session).not_to be_revoked

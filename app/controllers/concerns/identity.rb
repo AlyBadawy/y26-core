@@ -51,7 +51,7 @@ module Identity
              session.user_agent == request.user_agent
             Current.session = session
           end
-        rescue => e
+        rescue StandardError => e
           Rails.logger.debug { "Authentication failed: #{e.message}" }
         end
       end

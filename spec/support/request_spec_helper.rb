@@ -6,7 +6,7 @@ module RequestSpecHelper
     [user, session, token]
   end
 
-  def auth_headers(token: nil, user: nil, admin: false, extra_headers: {})
+  def auth_headers(token: nil, user: nil, extra_headers: {})
     auth_token = "Bearer #{token ? token : create_auth_trio(user: user).third}"
       {
         'Accept' => 'application/json',

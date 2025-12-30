@@ -27,32 +27,32 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def update
-     if @user.authenticate(params.expect(user: [:current_password]).dig(:current_password))
+    if @user.authenticate(params.expect(user: [:current_password]).dig(:current_password))
       if @user.update(user_params)
         render :show, status: :ok
       else
         render json: { errors: @user.errors.full_messages },
                status: :unprocessable_content
       end
-     else
+    else
       render json: {
         errors: ["Current password is incorrect"],
         instructions: "Please verify your current password and try again.",
       }, status: :unprocessable_content
-     end
+    end
   end
 
   def destroy
     @user = Current.user
-      if @user.authenticate(params.expect(user: [:current_password]).dig(:current_password))
-        @user.destroy
-        render json: { message: "Account deleted successfully" }, status: :ok
-      else
-        render json: {
-          errors: ["Current password is incorrect"],
-          instructions: "Please verify your current password and try again.",
-        }, status: :unprocessable_content
-      end
+    if @user.authenticate(params.expect(user: [:current_password]).dig(:current_password))
+      @user.destroy
+      render json: { message: "Account deleted successfully" }, status: :ok
+    else
+      render json: {
+        errors: ["Current password is incorrect"],
+        instructions: "Please verify your current password and try again.",
+      }, status: :unprocessable_content
+    end
   end
 
   private
