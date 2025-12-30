@@ -18,7 +18,6 @@ RSpec.describe "Api::V1::Sessions", type: :request do
       expect(records.first).to include(
         "id",
         "refreshCount",
-        "refreshToken",
         "refreshTokenExpiresAt",
         "lastRefreshedAt",
         "revoked"
@@ -40,7 +39,6 @@ RSpec.describe "Api::V1::Sessions", type: :request do
       expect(JSON.parse(response.body)).to include(
         "id",
         "refreshCount",
-        "refreshToken",
         "refreshTokenExpiresAt",
         "lastRefreshedAt",
         "revoked"
