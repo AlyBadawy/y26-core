@@ -38,18 +38,22 @@ RSpec.describe "Api::V1::Accounts", type: :request do
         it "creates a new User" do
           expect {
               post api_v1_accounts_url,
-                   params: { user: valid_attributes }, as: :json
+                   params: { user: valid_attributes },
+                   as: :json,
+                   headers: { "User-Agent" => "Ruby/RSpec" }
           }.to change(User, :count).by(1)
         end
 
         it "renders a JSON response with the new user" do
           post api_v1_accounts_url,
-               params: { user: valid_attributes }, as: :json
+               params: { user: valid_attributes },
+               as: :json,
+               headers: { "User-Agent" => "Ruby/RSpec" }
           expect(response).to have_http_status(:created)
           expect(response.content_type).to match(a_string_including("application/json"))
           res_body = JSON.parse(response.body)
 
-          expect(res_body.keys).to include(*expected_keys)
+          expect(res_body.keys).to include('accessToken', 'refreshToken', 'refreshTokenExpiresAt')
         end
       end
 

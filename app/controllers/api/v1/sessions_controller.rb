@@ -63,11 +63,13 @@ class Api::V1::SessionsController < ApplicationController
                }
       else
         SessionCreator.create_session!(user, request)
+        user_json = JSON.parse(render_to_string(partial: "api/v1/accounts/user", formats: [:json], locals: { user: user }))
         render status: :created,
                json: {
                  access_token: AuthEncoder.encode(Current.session),
                  refresh_token: Current.session.refresh_token,
                  refresh_token_expires_at: Current.session.refresh_token_expires_at,
+                 user: user_json,
                }
       end
   end
