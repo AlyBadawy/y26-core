@@ -8,4 +8,4 @@ json.bio user.bio
 
 json.created_at user.created_at
 json.updated_at user.updated_at
-json.url api_v1_account_url(user)
+json.url api_v1_account_url(user.username)

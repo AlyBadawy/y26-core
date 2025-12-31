@@ -1,4 +1,5 @@
 class Api::V1::AccountsController < ApplicationController
+  include LoginRender
   skip_authentication! only: [:create]
 
   def show
@@ -18,8 +19,7 @@ class Api::V1::AccountsController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      render :show,
-             status: :created
+      render_login
     else
       render json: { errors: @user.errors.full_messages },
              status: :unprocessable_content
