@@ -20,7 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_143731) do
     t.string "ip_address", null: false
     t.datetime "last_refreshed_at"
     t.integer "refresh_count", default: 0, null: false
-    t.string "refresh_token", null: false
+    t.string "refresh_token"
     t.datetime "refresh_token_expires_at"
     t.boolean "revoked", default: false, null: false
     t.datetime "updated_at", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_143731) do
     t.string "first_name"
     t.string "last_name"
     t.string "new_email"
+    t.datetime "password_changed_at"
     t.string "password_digest"
     t.string "phone"
     t.string "reset_password_token"

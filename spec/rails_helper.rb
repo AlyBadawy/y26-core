@@ -5,6 +5,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 
 require 'rspec/rails'
 
+
+Rails.root.glob("spec/support/**/*.rb").sort.each { |f| require f }
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -13,9 +16,15 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include ActiveSupport::Testing::TimeHelpers
+  config.include RequestSpecHelper, type: :request
 
   config.use_transactional_fixtures = true
   config.filter_rails_from_backtrace!
+
+  config.before(:each) do
+    Current.session = nil
+    Current.clear_all
+  end
 
   config.after(:each) { DatabaseCleaner.clean }
 
