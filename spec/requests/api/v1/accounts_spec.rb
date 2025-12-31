@@ -41,7 +41,7 @@ RSpec.describe "Api::V1::Accounts", type: :request do
                    params: { user: valid_attributes },
                    as: :json,
                    headers: { "User-Agent" => "Ruby/RSpec" }
-          }.to change(User, :count).by(1)
+          }.to change(User, :count).by(1).and change(Session, :count).by(1)
         end
 
         it "renders a JSON response with the new user" do
@@ -53,7 +53,7 @@ RSpec.describe "Api::V1::Accounts", type: :request do
           expect(response.content_type).to match(a_string_including("application/json"))
           res_body = JSON.parse(response.body)
 
-          expect(res_body.keys).to include('accessToken', 'refreshToken', 'refreshTokenExpiresAt')
+          expect(res_body.keys).to include('accessToken', 'refreshToken', 'refreshTokenExpiresAt', 'user')
         end
       end
 

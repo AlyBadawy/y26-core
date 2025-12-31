@@ -1,4 +1,6 @@
 class Api::V1::SessionsController < ApplicationController
+  include LoginRender
+
   skip_authentication! only: %i[create update]
 
   before_action :set_session, only: %i[show destroy]
@@ -12,8 +14,8 @@ class Api::V1::SessionsController < ApplicationController
 
   def create
     params.require([:email_address, :password])
-    if user = User.authenticate_by(params.permit([:email_address, :password]))
-        render_login_response(user)
+    if @user = User.authenticate_by(params.permit([:email_address, :password]))
+        render_login_response(@user)
     else
         render status: :unauthorized,
                json: {
@@ -62,15 +64,7 @@ class Api::V1::SessionsController < ApplicationController
                  instructions: "Please reset your password before logging in.",
                }
       else
-        SessionCreator.create_session!(user, request)
-        user_json = JSON.parse(render_to_string(partial: "api/v1/accounts/user", formats: [:json], locals: { user: user }))
-        render status: :created,
-               json: {
-                 access_token: AuthEncoder.encode(Current.session),
-                 refresh_token: Current.session.refresh_token,
-                 refresh_token_expires_at: Current.session.refresh_token_expires_at,
-                 user: user_json,
-               }
+        render_login
       end
   end
 end
