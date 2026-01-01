@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_29_143731) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_01_194329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -51,5 +51,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_143731) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "weather_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.string "status", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id", "date"], name: "index_weather_entries_on_user_id_and_date", unique: true
+    t.index ["user_id"], name: "index_weather_entries_on_user_id"
+  end
+
   add_foreign_key "sessions", "users"
+  add_foreign_key "weather_entries", "users"
 end

@@ -41,6 +41,8 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
 
+  has_many :weather_entries, dependent: :destroy
+
   before_save :update_password_changed_at, if: :will_save_change_to_password_digest?
 
   def generate_reset_password_token!
