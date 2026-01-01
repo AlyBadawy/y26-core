@@ -14,7 +14,7 @@ module AuthConfiguration
   end
 
   def session_expiration_duration
-    15.minutes
+    1.minute
   end
 
   def password_min_length

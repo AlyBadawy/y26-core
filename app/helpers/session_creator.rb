@@ -15,6 +15,11 @@ module SessionCreator
       refresh_token_expires_at: 1.week.from_now,
     ).tap do |session|
       Current.session = session
+      # Keep only the 10 most recent sessions for the user.
+      # Evict older sessions (by updated_at) to limit total sessions.
+      user.sessions.order(updated_at: :desc).offset(5).find_each do |old_session|
+        old_session.destroy unless old_session.is_valid_session?
+      end
     end
   end
 end

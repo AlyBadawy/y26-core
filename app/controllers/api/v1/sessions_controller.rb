@@ -53,7 +53,11 @@ class Api::V1::SessionsController < ApplicationController
 
   def set_session
     id = params[:id]
-    @session = id ? Current.user.sessions.find(params[:id]) : Current.session
+    if id == "current"
+      @session = Current.session
+      return
+    end
+    @session = id  ? Current.user.sessions.find(params[:id]) : Current.session
   end
 
   def render_login_response(user)
