@@ -24,7 +24,7 @@ class Api::V1::WaterIntakeEntriesController < ApplicationController
     if @water_intake_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Water intake entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { cups: 0 }, status: :ok
     end
   end
 

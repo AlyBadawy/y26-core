@@ -24,7 +24,7 @@ class Api::V1::WeatherEntriesController < ApplicationController
     if @weather_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Weather entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { status: "" }, status: :ok
     end
   end
 

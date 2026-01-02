@@ -24,7 +24,7 @@ class Api::V1::MoodEntriesController < ApplicationController
     if @mood_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Mood entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { status: 0 }, status: :ok
     end
   end
 

@@ -24,7 +24,7 @@ class Api::V1::SleepHoursEntriesController < ApplicationController
     if @sleep_hours_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Sleep hours entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { hours: 0 }, status: :ok
     end
   end
 

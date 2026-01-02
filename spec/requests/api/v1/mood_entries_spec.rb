@@ -36,9 +36,9 @@ RSpec.describe "Api::V1::MoodEntries", type: :request do
       expect(body["status"]).to eq(entry.status)
     end
 
-    it "returns 404 when entry not found" do
+    it "returns 200 when entry not found" do
       get api_v1_mood_entry_url(Date.parse("1999-01-01")), headers: @headers, as: :json
-      expect(response).to have_http_status(:not_found)
+      expect(response).to have_http_status(:ok)
     end
   end
 
