@@ -3,4 +3,4 @@ json.records @gratitude_entries do |entry|
 end
 
 json.count @gratitude_entries.count
-json.url
+json.url "No URL available for this action"

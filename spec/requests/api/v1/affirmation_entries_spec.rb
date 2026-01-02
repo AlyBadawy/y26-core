@@ -22,7 +22,7 @@ RSpec.describe "Api::V1::AffirmationEntries", type: :request do
     end
 
     it "returns bad_request for invalid date params" do
-      get api_v1_affirmation_entries_url, params: { start_date: "bad", end_date: "also_bad" }, headers: @headers.except("Content-Type")
+      get api_v1_affirmation_entries_url, params: { start_date: "bad", end_date: "also_bad" }, headers: @headers
       expect(response).to have_http_status(:bad_request)
       body = JSON.parse(response.body)
       expect(body["errors"]).to include("Invalid or missing date range")
@@ -32,7 +32,7 @@ RSpec.describe "Api::V1::AffirmationEntries", type: :request do
   describe "GET /show" do
     it "returns the requested affirmation entry" do
       entry = create(:affirmation_entry, user: @user)
-      get api_v1_affirmation_entry_url(entry.id), headers: @headers.except("Content-Type")
+      get api_v1_affirmation_entry_url(entry.id), headers: @headers
       expect(response).to have_http_status(:ok)
       body = JSON.parse(response.body)
       expect(body["id"]).to eq(entry.id)
@@ -87,5 +87,21 @@ RSpec.describe "Api::V1::AffirmationEntries", type: :request do
       }.to change(AffirmationEntry, :count).by(-1)
       expect(response).to have_http_status(:no_content)
     end
+  end
+
+  describe "authentication" do
+    it_behaves_like "unauthorized request", :get, -> { api_v1_affirmation_entries_url(start_date: "2025-12-01", end_date: "2025-12-31") }, :no_token
+    it_behaves_like "unauthorized request", :get, -> { api_v1_affirmation_entries_url(start_date: "2025-12-01", end_date: "2025-12-31") }, :invalid_token
+
+    it_behaves_like "unauthorized request", :get, -> { api_v1_affirmation_entry_url(1) }, :no_token
+    it_behaves_like "unauthorized request", :get, -> { api_v1_affirmation_entry_url(1) }, :invalid_token
+    it_behaves_like "unauthorized request", :post, -> { api_v1_affirmation_entries_url }, :no_token
+    it_behaves_like "unauthorized request", :post, -> { api_v1_affirmation_entries_url }, :invalid_token
+
+    it_behaves_like "unauthorized request", :put, -> { api_v1_affirmation_entry_url(1) }, :no_token
+    it_behaves_like "unauthorized request", :put, -> { api_v1_affirmation_entry_url(1) }, :invalid_token
+
+    it_behaves_like "unauthorized request", :delete, -> { api_v1_affirmation_entry_url(1) }, :no_token
+    it_behaves_like "unauthorized request", :delete, -> { api_v1_affirmation_entry_url(1) }, :invalid_token
   end
 end
