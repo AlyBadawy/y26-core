@@ -7,5 +7,7 @@ class CreateMoodEntries < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
+
+    add_index :mood_entries, [:user_id, :date], unique: true
   end
 end

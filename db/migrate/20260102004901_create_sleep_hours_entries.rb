@@ -7,5 +7,7 @@ class CreateSleepHoursEntries < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
+
+    add_index :sleep_hours_entries, [:user_id, :date], unique: true
   end
 end

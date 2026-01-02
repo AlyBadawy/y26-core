@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_02_134609) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "affirmation_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.string "content", null: false
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_affirmation_entries_on_user_id"
+  end
+
+  create_table "gratitude_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.string "content", null: false
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_gratitude_entries_on_user_id"
+  end
 
   create_table "mood_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -21,6 +39,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
     t.integer "status", default: 3, null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.index ["user_id", "date"], name: "index_mood_entries_on_user_id_and_date", unique: true
     t.index ["user_id"], name: "index_mood_entries_on_user_id"
   end
 
@@ -45,6 +64,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
     t.integer "hours", default: 8, null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.index ["user_id", "date"], name: "index_sleep_hours_entries_on_user_id_and_date", unique: true
     t.index ["user_id"], name: "index_sleep_hours_entries_on_user_id"
   end
 
@@ -75,6 +95,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
     t.date "date", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.index ["user_id", "date"], name: "index_water_intake_entries_on_user_id_and_date", unique: true
     t.index ["user_id"], name: "index_water_intake_entries_on_user_id"
   end
 
@@ -88,6 +109,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
     t.index ["user_id"], name: "index_weather_entries_on_user_id"
   end
 
+  add_foreign_key "affirmation_entries", "users"
+  add_foreign_key "gratitude_entries", "users"
   add_foreign_key "mood_entries", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sleep_hours_entries", "users"

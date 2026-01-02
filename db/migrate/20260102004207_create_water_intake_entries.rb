@@ -7,5 +7,7 @@ class CreateWaterIntakeEntries < ActiveRecord::Migration[8.1]
 
       t.timestamps
     end
+
+    add_index :water_intake_entries, [:user_id, :date], unique: true
   end
 end

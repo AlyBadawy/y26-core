@@ -1,3 +1,4 @@
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
@@ -80,6 +81,8 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:mood_entries).dependent(:destroy) }
     it { is_expected.to have_many(:water_intake_entries).dependent(:destroy) }
     it { is_expected.to have_many(:sleep_hours_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:affirmation_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:gratitude_entries).dependent(:destroy) }
   end
 
   describe "The #generate_reset_password_token! instance method" do

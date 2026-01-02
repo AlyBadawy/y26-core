@@ -1,7 +1,8 @@
 class WeatherEntry < ApplicationRecord
   belongs_to :user
 
-  validates :date, presence: true, uniqueness: { scope: :user_id }
+  validates :date, presence: true
+  validates :date, uniqueness: { scope: :user_id }
   validates :status, presence: true, inclusion: { in: %w[sun cloud cloudSun cloudRain cloudSnow zap] }
 
 

@@ -14,6 +14,7 @@ RSpec.describe SleepHoursEntry, type: :model do
     it { is_expected.to validate_presence_of(:date) }
     it { is_expected.to validate_presence_of(:hours) }
     it { is_expected.to validate_inclusion_of(:hours).in_range(0..10) }
+    it { is_expected.to validate_uniqueness_of(:date).scoped_to(:user_id) }
   end
 
   describe "associations" do
