@@ -9,6 +9,21 @@ Rails.application.routes.draw do
           post :upsert
         end
       end
+      resources :mood_entries, only: %i[index show], param: :date do
+        collection do
+          post :upsert
+        end
+      end
+      resources :water_intake_entries, only: %i[index show], param: :date do
+        collection do
+          post :upsert
+        end
+      end
+      resources :sleep_hours_entries, only: %i[index show], param: :date do
+        collection do
+          post :upsert
+        end
+      end
     end
   end
 

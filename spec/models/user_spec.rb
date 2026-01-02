@@ -76,6 +76,10 @@ RSpec.describe User, type: :model do
 
   describe "associations" do
     it { is_expected.to have_many(:sessions).dependent(:destroy) }
+    it { is_expected.to have_many(:weather_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:mood_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:water_intake_entries).dependent(:destroy) }
+    it { is_expected.to have_many(:sleep_hours_entries).dependent(:destroy) }
   end
 
   describe "The #generate_reset_password_token! instance method" do

@@ -42,6 +42,9 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   has_many :weather_entries, dependent: :destroy
+  has_many :mood_entries, dependent: :destroy
+  has_many :water_intake_entries, dependent: :destroy
+  has_many :sleep_hours_entries, dependent: :destroy
 
   before_save :update_password_changed_at, if: :will_save_change_to_password_digest?
 

@@ -1,4 +1,4 @@
-class Api::V1::WeatherEntriesController < ApplicationController
+class Api::V1::SleepHoursEntriesController < ApplicationController
   def index
     begin
       start_date = Date.parse(params[:start_date])
@@ -8,7 +8,7 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entries = Current.user.weather_entries.where(date: start_date..end_date).order(date: :asc)
+    @sleep_hours_entries = Current.user.sleep_hours_entries.where(date: start_date..end_date).order(date: :asc)
     render :index, status: :ok
   end
 
@@ -20,16 +20,16 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entry = Current.user.weather_entries.find_by(date: date)
-    if @weather_entry
+    @sleep_hours_entry = Current.user.sleep_hours_entries.find_by(date: date)
+    if @sleep_hours_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Weather entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { errors: ["Sleep hours entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
     end
   end
 
   def upsert
-    payload = params.permit(:date, :status)
+    payload = params.permit(:date, :hours)
     begin
       date = Date.parse(payload[:date])
     rescue ArgumentError, TypeError
@@ -37,21 +37,20 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entry = Current.user.weather_entries.find_or_initialize_by(date: date)
-    was_persisted = @weather_entry.persisted?
+    @sleep_hours_entry = Current.user.sleep_hours_entries.find_or_initialize_by(date: date)
+    was_persisted = @sleep_hours_entry.persisted?
 
-    unless payload[:status].present? && WeatherEntry.statuses.key?(payload[:status].to_s)
-      render json: { errors: ["Status is invalid or missing"], instructions: "Valid statuses: #{WeatherEntry.statuses.keys.join(', ')}" }, status: :unprocessable_content
+    unless payload[:hours].present? && (1..10).include?(payload[:hours].to_i)
+      render json: { errors: ["Hours is invalid or missing"], instructions: "Hours must be an integer between 0 and 10." }, status: :unprocessable_content
       return
     end
 
-    @weather_entry.status = payload[:status]
-
-    if @weather_entry.save
+    @sleep_hours_entry.hours = payload[:hours]
+    if @sleep_hours_entry.save
       status_code = was_persisted ? :ok : :created
       render :show, status: status_code
     else
-      render json: { errors: @weather_entry.errors.full_messages }, status: :unprocessable_content
+      render json: { errors: @sleep_hours_entry.errors.full_messages }, status: :unprocessable_content
     end
   end
 end

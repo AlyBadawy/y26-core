@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_01_194329) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_02_004901) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "mood_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.integer "status", default: 3, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_mood_entries_on_user_id"
+  end
 
   create_table "sessions", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -28,6 +37,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_01_194329) do
     t.uuid "user_id", null: false
     t.index ["refresh_token"], name: "index_sessions_on_refresh_token", unique: true
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "sleep_hours_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date", null: false
+    t.integer "hours", default: 8, null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_sleep_hours_entries_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
@@ -51,6 +69,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_01_194329) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "water_intake_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "cups", default: 1, null: false
+    t.date "date", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id"], name: "index_water_intake_entries_on_user_id"
+  end
+
   create_table "weather_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.date "date", null: false
@@ -61,6 +88,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_01_194329) do
     t.index ["user_id"], name: "index_weather_entries_on_user_id"
   end
 
+  add_foreign_key "mood_entries", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "sleep_hours_entries", "users"
+  add_foreign_key "water_intake_entries", "users"
   add_foreign_key "weather_entries", "users"
 end

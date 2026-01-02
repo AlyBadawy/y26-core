@@ -1,4 +1,4 @@
-class Api::V1::WeatherEntriesController < ApplicationController
+class Api::V1::MoodEntriesController < ApplicationController
   def index
     begin
       start_date = Date.parse(params[:start_date])
@@ -8,7 +8,7 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entries = Current.user.weather_entries.where(date: start_date..end_date).order(date: :asc)
+    @mood_entries = Current.user.mood_entries.where(date: start_date..end_date).order(date: :asc)
     render :index, status: :ok
   end
 
@@ -20,11 +20,11 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entry = Current.user.weather_entries.find_by(date: date)
-    if @weather_entry
+    @mood_entry = Current.user.mood_entries.find_by(date: date)
+    if @mood_entry
       render :show, status: :ok
     else
-      render json: { errors: ["Weather entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
+      render json: { errors: ["Mood entry not found"], instructions: "Create an entry using the upsert endpoint." }, status: :not_found
     end
   end
 
@@ -37,21 +37,20 @@ class Api::V1::WeatherEntriesController < ApplicationController
       return
     end
 
-    @weather_entry = Current.user.weather_entries.find_or_initialize_by(date: date)
-    was_persisted = @weather_entry.persisted?
+    @mood_entry = Current.user.mood_entries.find_or_initialize_by(date: date)
+    was_persisted = @mood_entry.persisted?
 
-    unless payload[:status].present? && WeatherEntry.statuses.key?(payload[:status].to_s)
-      render json: { errors: ["Status is invalid or missing"], instructions: "Valid statuses: #{WeatherEntry.statuses.keys.join(', ')}" }, status: :unprocessable_content
+    unless payload[:status].present? && (1..5).include?(payload[:status].to_i)
+      render json: { errors: ["Status is invalid or missing"], instructions: "Status must be an integer between 1 and 5." }, status: :unprocessable_content
       return
     end
 
-    @weather_entry.status = payload[:status]
-
-    if @weather_entry.save
+    @mood_entry.status = payload[:status]
+    if @mood_entry.save
       status_code = was_persisted ? :ok : :created
       render :show, status: status_code
     else
-      render json: { errors: @weather_entry.errors.full_messages }, status: :unprocessable_content
+      render json: { errors: @mood_entry.errors.full_messages }, status: :unprocessable_content
     end
   end
 end
