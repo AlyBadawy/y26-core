@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
       resources :affirmation_entries, only: %i[index show create update destroy]
       resources :gratitude_entries, only: %i[index show create update destroy]
+      resources :journal_entries, only: %i[index show create update destroy]
       resources :weather_entries, only: %i[index show], param: :date do
         collection do
           post :upsert

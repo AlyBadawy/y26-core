@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_02_134609) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_03_025629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -31,6 +31,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_134609) do
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_gratitude_entries_on_user_id"
+  end
+
+  create_table "journal_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "journaled_at", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["user_id", "journaled_at"], name: "index_journal_entries_on_user_id_and_journaled_at"
+    t.index ["user_id"], name: "index_journal_entries_on_user_id"
   end
 
   create_table "mood_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
@@ -111,6 +122,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_02_134609) do
 
   add_foreign_key "affirmation_entries", "users"
   add_foreign_key "gratitude_entries", "users"
+  add_foreign_key "journal_entries", "users"
   add_foreign_key "mood_entries", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sleep_hours_entries", "users"
