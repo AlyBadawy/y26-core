@@ -84,6 +84,9 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:affirmation_entries).dependent(:destroy) }
     it { is_expected.to have_many(:gratitude_entries).dependent(:destroy) }
     it { is_expected.to have_many(:journal_entries).dependent(:destroy) }
+
+    it { is_expected.to have_many(:books).dependent(:destroy) }
+    it { is_expected.to have_many(:movies).dependent(:destroy) }
   end
 
   describe "The #generate_reset_password_token! instance method" do

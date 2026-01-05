@@ -29,6 +29,9 @@ Rails.application.routes.draw do
           post :upsert
         end
       end
+
+      resources :books, only: %i[index show create update destroy]
+      resources :movies, only: %i[index show create update destroy]
     end
   end
 
