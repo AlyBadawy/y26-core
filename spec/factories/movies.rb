@@ -4,8 +4,7 @@ FactoryBot.define do
     title { Faker::Movie.title }
     genre { "Sci-Fi" }
     rating { 1 }
-    started_on { nil }
-    finished_on { nil }
+    watched_on { nil }
     status { "to_watch" }
     notes { "My notes about the movie" }
   end

@@ -34,6 +34,6 @@ class Api::V1::MoviesController < ApplicationController
   private
 
   def movie_params
-    params.expect(movie: [:title, :genre, :rating, :started_on, :finished_on, :status, :notes])
+    params.expect(movie: [:title, :genre, :rating, :watched_on, :status, :notes])
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_05_142748) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_08_161351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -78,11 +78,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_05_142748) do
     t.string "genre"
     t.text "notes"
     t.integer "rating"
-    t.date "started_on"
     t.string "status", default: "to_watch", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
+    t.date "watched_on"
     t.index ["genre"], name: "index_movies_on_genre"
     t.index ["rating"], name: "index_movies_on_rating"
     t.index ["status"], name: "index_movies_on_status"

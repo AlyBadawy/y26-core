@@ -2,8 +2,7 @@ json.id movie.id
 json.title movie.title
 json.genre movie.genre
 json.rating movie.rating
-json.started_on movie.started_on
-json.finished_on movie.finished_on
+json.watched_on movie.watched_on
 json.status movie.status
 json.notes movie.notes
 
