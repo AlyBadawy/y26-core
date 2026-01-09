@@ -74,6 +74,20 @@ RSpec.describe "Api::V1::Movies", type: :request do
       expect(body["rating"]).to eq(5)
       expect(body["status"]).to eq("watched")
     end
+
+    it "returns 422 for invalid movie data" do
+      movie_params = {
+        title: "", # Invalid title
+        rating: 10, # Invalid rating
+      }
+
+      post api_v1_movies_path, params: { movie: movie_params }, headers: @headers, as: :json
+
+      expect(response).to have_http_status(:unprocessable_content)
+      body = JSON.parse(response.body)
+      expect(body["errors"]).to include("Title can't be blank")
+      expect(body["errors"]).to include("Rating must be less than or equal to 5")
+    end
   end
 
   describe "PUT /update" do
