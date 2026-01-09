@@ -36,7 +36,7 @@ RSpec.describe "Api::V1::Books", type: :request do
     it "returns the specified book" do
       book = create(:book, user: @user)
 
-      get api_v1_book_path(book), headers: @headers
+      get api_v1_book_path(book), headers: @headers, as: :json
 
       expect(response).to be_successful
       body = JSON.parse(response.body)
@@ -124,7 +124,7 @@ RSpec.describe "Api::V1::Books", type: :request do
     it "deletes an existing book" do
       book = create(:book, user: @user)
 
-      delete api_v1_book_path(book), headers: @headers
+      delete api_v1_book_path(book), headers: @headers, as: :json
 
       expect(response).to have_http_status(:no_content)
       expect(Book.find_by(id: book.id)).to be_nil

@@ -52,7 +52,6 @@ class User < ApplicationRecord
   has_many :books, dependent: :destroy
   has_many :movies, dependent: :destroy
 
-
   before_save :update_password_changed_at, if: :will_save_change_to_password_digest?
 
   def generate_reset_password_token!
