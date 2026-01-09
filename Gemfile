@@ -1,11 +1,11 @@
 source "https://rubygems.org"
 
-gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.21"
 gem "bootsnap", require: false
 gem "image_processing", "~> 1.2"
 gem "jbuilder"
 gem "kamal", require: false
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.6"
 gem "puma", ">= 5.0"
 gem "rack-cors"
 gem "rails", "~> 8.1.1"
