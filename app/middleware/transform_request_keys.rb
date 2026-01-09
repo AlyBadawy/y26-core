@@ -4,6 +4,15 @@ class TransformRequestKeys
   end
 
   def call(env)
+    transform_body(env)
+    transform_query_params(env)
+
+    @app.call(env)
+  end
+
+  private
+
+  def transform_body(env)
     if env["rack.input"]
       request_body = env["rack.input"].read
       env["rack.input"].rewind
@@ -17,8 +26,9 @@ class TransformRequestKeys
         end
       end
     end
+  end
 
-    # Also transform any params present in the query string.
+  def transform_query_params(env)
     if env["QUERY_STRING"] && !env["QUERY_STRING"].strip.empty?
       begin
         require "rack"
@@ -38,7 +48,5 @@ class TransformRequestKeys
         # If parsing fails for any reason, silently ignore and proceed with original env.
       end
     end
-
-    @app.call(env)
   end
 end

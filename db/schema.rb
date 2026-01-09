@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_03_025629) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_05_142748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -22,6 +22,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_03_025629) do
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["user_id"], name: "index_affirmation_entries_on_user_id"
+  end
+
+  create_table "books", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.string "author", null: false
+    t.datetime "created_at", null: false
+    t.date "finished_on"
+    t.string "genre"
+    t.text "notes"
+    t.integer "rating"
+    t.date "started_on"
+    t.string "status", default: "to_read", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["genre"], name: "index_books_on_genre"
+    t.index ["rating"], name: "index_books_on_rating"
+    t.index ["status"], name: "index_books_on_status"
+    t.index ["user_id"], name: "index_books_on_user_id"
   end
 
   create_table "gratitude_entries", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
@@ -52,6 +70,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_03_025629) do
     t.uuid "user_id", null: false
     t.index ["user_id", "date"], name: "index_mood_entries_on_user_id_and_date", unique: true
     t.index ["user_id"], name: "index_mood_entries_on_user_id"
+  end
+
+  create_table "movies", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "genre"
+    t.text "notes"
+    t.integer "rating"
+    t.string "status", default: "to_watch", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.date "watched_on"
+    t.index ["genre"], name: "index_movies_on_genre"
+    t.index ["rating"], name: "index_movies_on_rating"
+    t.index ["status"], name: "index_movies_on_status"
+    t.index ["user_id"], name: "index_movies_on_user_id"
   end
 
   create_table "sessions", id: :uuid, default: -> { "uuidv7()" }, force: :cascade do |t|
@@ -121,9 +155,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_03_025629) do
   end
 
   add_foreign_key "affirmation_entries", "users"
+  add_foreign_key "books", "users"
   add_foreign_key "gratitude_entries", "users"
   add_foreign_key "journal_entries", "users"
   add_foreign_key "mood_entries", "users"
+  add_foreign_key "movies", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "sleep_hours_entries", "users"
   add_foreign_key "water_intake_entries", "users"
