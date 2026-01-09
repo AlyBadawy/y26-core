@@ -5,8 +5,7 @@ class CreateMovies < ActiveRecord::Migration[8.1]
       t.string :title, null: false
       t.string :genre
       t.integer :rating
-      t.date :started_on
-      t.date :finished_on
+      t.date :watched_on
       t.string :status, null: false, default: "to_watch"
       t.text :notes
 

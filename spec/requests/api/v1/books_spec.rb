@@ -48,7 +48,7 @@ RSpec.describe "Api::V1::Books", type: :request do
       other_user = create(:user)
       book = create(:book, user: other_user)
 
-      get api_v1_book_path(book), headers: @headers
+      get api_v1_book_path(book), headers: @headers, as: :json
 
       expect(response).to have_http_status(:not_found)
     end
@@ -134,7 +134,7 @@ RSpec.describe "Api::V1::Books", type: :request do
       other_user = create(:user)
       book = create(:book, user: other_user)
 
-      delete api_v1_book_path(book), headers: @headers
+      delete api_v1_book_path(book), headers: @headers, as: :json
 
       expect(response).to have_http_status(:not_found)
     end

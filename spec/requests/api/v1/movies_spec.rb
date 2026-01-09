@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Api::V1::Movies", type: :request do
-    before do
+  before do
     trio = create_auth_trio
     @user, @session, @token = trio
     @headers = auth_headers(token: @token)
@@ -60,8 +60,7 @@ RSpec.describe "Api::V1::Movies", type: :request do
         title: "Inception",
         genre: "Sci-Fi",
         rating: 5,
-        started_on: "2023-01-01",
-        finished_on: "2023-01-02",
+        watched_on: "2023-01-01",
         status: "watched",
         notes: "Great movie!",
       }
